@@ -44,6 +44,19 @@ public class TokenService {
                 .sign(Algorithm.HMAC256(KEY.getBytes()));
     }
 
+    public String generateSaveToken(Authentication auth) {
+        String username = ((UserDetails) auth.getPrincipal()).getUsername();
+        /**
+         * .withClaim("mail","aaaa")
+         * ile istediğimiz alanı ekleyebiliriz
+         */
+        return JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + (30 * 1000)))
+                .withIssuer(ISSUER)
+                .sign(Algorithm.HMAC256(KEY.getBytes()));
+    }
+
 
     public DecodedJWT verifyJWT(String token) {
         Algorithm algorithm = Algorithm.HMAC256(KEY.getBytes());

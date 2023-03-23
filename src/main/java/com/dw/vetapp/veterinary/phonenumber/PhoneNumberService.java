@@ -3,6 +3,7 @@ package com.dw.vetapp.veterinary.phonenumber;
 import com.dw.vetapp.veterinary.helper.exception.GenericException;
 import com.dw.vetapp.veterinary.user.User;
 import com.dw.vetapp.veterinary.user.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class PhoneNumberService {
     private final PhoneNumberRepository repository;
     private final UserService userService;
 
+    @Transactional
     public PhoneNumberResponse savePhoneNumber(PhoneNumberRequest request){
         User user = userService.getUser(request.userId());
         PhoneNumber savedPhoneNumber = repository.save
@@ -25,6 +27,7 @@ public class PhoneNumberService {
         return PhoneNumberResponse.convertPhoneNumberToPhoneNumberResponse(savedPhoneNumber);
     }
 
+    @Transactional
     public PhoneNumberResponse updatePhoneNumber(PhoneNumberUpdateRequest request){
         PhoneNumber savedPhoneNumber = getPhoneNumber((long) request.id());
         return PhoneNumberResponse.convertPhoneNumberToPhoneNumberResponse(

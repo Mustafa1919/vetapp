@@ -5,15 +5,19 @@ import com.dw.vetapp.veterinary.animal.AnimalService;
 import com.dw.vetapp.veterinary.animalowner.AnimalOwner;
 import com.dw.vetapp.veterinary.animalowner.AnimalOwnerService;
 import com.dw.vetapp.veterinary.doctor.Doctor;
+import com.dw.vetapp.veterinary.doctor.DoctorRepository;
 import com.dw.vetapp.veterinary.doctor.DoctorService;
 import com.dw.vetapp.veterinary.address.Address;
 import com.dw.vetapp.veterinary.phonenumber.PhoneNumber;
 import com.dw.vetapp.veterinary.address.AddressRepository;
 import com.dw.vetapp.veterinary.phonenumber.PhoneNumberRepository;
+import com.dw.vetapp.veterinary.user.User;
+import com.dw.vetapp.veterinary.user.UserRepository;
 import com.dw.vetapp.veterinary.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,15 +29,19 @@ import java.util.List;
 public class StartupConfig implements CommandLineRunner {
 
     private final AnimalService animalService;
-    private final DoctorService doctorService;
+    private final DoctorRepository doctorService;
     private final AnimalOwnerService animalOwnerService;
     private final PhoneNumberRepository phoneNumberRepository;
     private final AddressRepository addressRepository;
-    private final UserService userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
     public void run(String... args) throws Exception {
+
+
+
 /*
         Doctor doctor = Doctor.builder()
                 .eMail("mail")

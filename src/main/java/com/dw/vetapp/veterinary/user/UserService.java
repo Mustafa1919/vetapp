@@ -12,6 +12,7 @@ public class UserService {
 
     private final UserRepository repository;
 
+    @Transactional
     public UserDto getUserDto(String username) {
         User loginUser = findUserByUsername(username);
         return new UserDto.UserDtoBuilder().id(loginUser.getId())
@@ -20,6 +21,7 @@ public class UserService {
                 .build();
     }
 
+    @Transactional
     public User getUser(int id){
         return repository.findById((long) id).orElseThrow(
                 () -> GenericException.builder()
@@ -32,5 +34,10 @@ public class UserService {
     @Transactional
     public User findUserByUsername(String username) {
         return repository.findUserByeMail(username).orElseThrow();
+    }
+
+    @Transactional
+    public User updateUser(User user) {
+        return repository.save(user);
     }
 }

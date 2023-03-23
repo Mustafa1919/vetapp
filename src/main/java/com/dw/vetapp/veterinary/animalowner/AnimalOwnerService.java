@@ -5,6 +5,7 @@ import com.dw.vetapp.veterinary.animal.AnimalResponse;
 import com.dw.vetapp.veterinary.doctor.Doctor;
 import com.dw.vetapp.veterinary.doctor.DoctorService;
 import com.dw.vetapp.veterinary.helper.exception.GenericException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,8 @@ public class AnimalOwnerService {
                 .map(AnimalOwnerResponse::convertAnimalOwnerToAnimalOwnerResponse)
                 .toList();
     }
+
+    @Transactional
     public AnimalOwnerInfoResponse getAnimalOwnerResponse(Long id){
         AnimalOwner owner = repository.findById(id).orElseThrow(
                 () -> GenericException.builder()
@@ -52,18 +55,25 @@ public class AnimalOwnerService {
                 .toList();
     }
 
+    @Transactional
     public AnimalOwnerResponse create(AnimalOwnerCreateRequest createRequest){
-        Doctor doctor = doctorService.getDoctor(createRequest.doctorId());
-        AnimalOwner owner = createRequest.convertAnimalOwnerCreateToAnimalOwner(doctor);
-        owner.setPassword(passwordEncoder.encode(createRequest.password()));
-        AnimalOwner savedOwner = repository.save(owner);
-        if (doctor.getAnimalOwners() != null)
-            doctor.getAnimalOwners().add(savedOwner);
-        else doctor.setAnimalOwners(new ArrayList<>(List.of(savedOwner)));
-        doctorService.update(doctor);
-        return AnimalOwnerResponse.convertAnimalOwnerToAnimalOwnerResponse(savedOwner);
+        try {
+            Doctor doctor = doctorService.getDoctor(createRequest.doctorId());
+            AnimalOwner owner = createRequest.convertAnimalOwnerCreateToAnimalOwner(doctor);
+            owner.setPassword(passwordEncoder.encode(createRequest.password()));
+            AnimalOwner savedOwner = repository.save(owner);
+            if (doctor.getAnimalOwners() != null)
+                doctor.getAnimalOwners().add(savedOwner);
+            else doctor.setAnimalOwners(new ArrayList<>(List.of(savedOwner)));
+            doctorService.update(doctor);
+            return AnimalOwnerResponse.convertAnimalOwnerToAnimalOwnerResponse(savedOwner);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
     }
 
+    @Transactional
     public AnimalOwnerResponse update(AnimalOwnerUpdateRequest updateRequest){
         AnimalOwner savedAnimalOwner = repository.findById((long) updateRequest.id()).orElseThrow(
                 () -> GenericException.builder()

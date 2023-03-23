@@ -36,12 +36,6 @@ public class SecurityConfig {
                 .headers().frameOptions().disable().and()
                 .csrf().disable()
                 .cors().and()
-                /*.authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/v1/doctor/**").permitAll();  //hasAuthority("DOCTOR");
-                    auth.requestMatchers("/api/v1/animalOwner/**").hasAuthority("OWNER");
-                    auth.requestMatchers("/api/v1/animal/**").hasAnyAuthority("DOCTOR", "OWNER");
-                    auth.anyRequest().authenticated();
-                })*/
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/doctor/**").hasAuthority("DOCTOR")
                 .requestMatchers("/api/v1/animalOwner/**").hasAuthority("OWNER")
@@ -60,7 +54,7 @@ public class SecurityConfig {
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web -> web.ignoring().requestMatchers( "/api/v1/auth/**","/api/v1/doctor/**"));
+        return (web -> web.ignoring().requestMatchers( "/api/v1/auth/**"));
     }
 
     @Bean

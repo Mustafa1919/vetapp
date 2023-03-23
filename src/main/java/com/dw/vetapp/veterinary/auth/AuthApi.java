@@ -1,5 +1,6 @@
 package com.dw.vetapp.veterinary.auth;
 
+import com.dw.vetapp.veterinary.user.ChangePasswordRequest;
 import com.dw.vetapp.veterinary.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +21,15 @@ public class AuthApi {
     @GetMapping("/currentUser")
     public ResponseEntity<UserDto> getCurrentUser(){
         return ResponseEntity.ok(service.getAuthenticatedUser());
+    }
+
+    @PostMapping("/saveService")
+    public ResponseEntity<LoginResponse> saveService(@RequestBody LoginRequest loginRequest){
+        return ResponseEntity.ok(service.login(loginRequest));
+    }
+
+    @PostMapping("/passChange")
+    public ResponseEntity<UserDto> changePassword(ChangePasswordRequest passRequest){
+        return ResponseEntity.ok(service.changePassword(passRequest));
     }
 }

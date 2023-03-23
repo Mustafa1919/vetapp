@@ -23,6 +23,7 @@ public class AnimalService {
     private final AnimalOwnerService ownerService;
     private final DoctorService doctorService;
 
+    @Transactional
     public List<AnimalResponse> getAnimalListByOwnerId(Long ownerId){
         return repository.getAnimalByOwner(ownerId)
                 .orElseThrow(() -> GenericException.builder()
@@ -46,6 +47,7 @@ public class AnimalService {
                         .build()));
     }
 
+    @Transactional
     public List<AnimalResponse> getDoctorAnimals(Long id){
         Doctor doctor = doctorService.getDoctor(id.intValue());
         List<AnimalResponse> animalList = new ArrayList<>();
@@ -79,6 +81,7 @@ public class AnimalService {
         return AnimalResponse.convertAnimalToAnimalResponse(savedAnimal);
     }
 
+    @Transactional
     public AnimalResponse updateAnimal(AnimalUpdateRequest updateRequest){
         Animal savedAnimal = repository.findById((long) updateRequest.id()).orElseThrow(
                 () -> GenericException.builder()

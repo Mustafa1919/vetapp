@@ -3,6 +3,7 @@ package com.dw.vetapp.veterinary.address;
 import com.dw.vetapp.veterinary.animalowner.AnimalOwner;
 import com.dw.vetapp.veterinary.animalowner.AnimalOwnerService;
 import com.dw.vetapp.veterinary.helper.exception.GenericException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class AddressService {
     private final AddressRepository repository;
     private final AnimalOwnerService ownerService;
 
+    @Transactional
     public AddressResponse saveAddress(AddressRequest request){
         AnimalOwner owner = ownerService.getAnimalOwner(request.ownerId());
         Address savedAddress = repository.save(request.convertAddressRequestToAddress(owner));
@@ -25,6 +27,7 @@ public class AddressService {
         return AddressResponse.convertAddressToAddressResponse(savedAddress);
     }
 
+    @Transactional
     public AddressResponse updateAddress(AddressUpdateRequest request){
         Address savedAddress = getAddress((long) request.id());
         return AddressResponse.convertAddressToAddressResponse(
