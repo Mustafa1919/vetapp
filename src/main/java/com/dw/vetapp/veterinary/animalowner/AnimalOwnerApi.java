@@ -1,6 +1,7 @@
 package com.dw.vetapp.veterinary.animalowner;
 
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequestMapping("/api/v1/patient")
 @RequiredArgsConstructor
 @RateLimiter(name = "basic")
+@Tag(name = "Hayvan Sahibi API", description = "Hayvan Sahibi İşlemlerinin Yapıldığı Api")
 public class AnimalOwnerApi {
 
     private final AnimalOwnerService service;

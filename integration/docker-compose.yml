@@ -1,10 +1,13 @@
-version: '2.4'
+version: '3.9'
 
 services:
   vetapp:
     image: vetapp:0.0.1
+    deploy:
+      mode: replicated
+      replicas: 3
     ports:
-      - 9090:8090
+      - "9090-9092:8090"
     environment:
       DB_URL: "jdbc:h2:tcp://h2db/vetapp-db;DB_CLOSE_DELAY=-1"
       DB_USERNAME: "test"
@@ -16,4 +19,4 @@ services:
   h2db:
     image: build/h2database
     ports:
-      - 9092:8082
+      - "9092:8082"

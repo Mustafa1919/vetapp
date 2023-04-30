@@ -3,6 +3,7 @@ package com.dw.vetapp.veterinary.doctor;
 import com.dw.vetapp.veterinary.animal.AnimalCreateRequest;
 import com.dw.vetapp.veterinary.animal.AnimalResponse;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api/v1/doctor")
 @RequiredArgsConstructor
 @RateLimiter(name = "basic")
+@Tag(name = "Doktor API", description = "Doktor İşlemlerinin Yapıldığı Api")
 public class DoctorApi {
 
     private final DoctorService service;
