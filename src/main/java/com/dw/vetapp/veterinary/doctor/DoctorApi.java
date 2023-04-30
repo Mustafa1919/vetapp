@@ -2,6 +2,7 @@ package com.dw.vetapp.veterinary.doctor;
 
 import com.dw.vetapp.veterinary.animal.AnimalCreateRequest;
 import com.dw.vetapp.veterinary.animal.AnimalResponse;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/doctor")
 @RequiredArgsConstructor
+@RateLimiter(name = "basic")
 public class DoctorApi {
 
     private final DoctorService service;
@@ -27,6 +29,7 @@ public class DoctorApi {
         return ResponseEntity.status(HttpStatus.OK).body(service.getDoctorInfo(id));
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping
     public ResponseEntity<DoctorResponse> saveDoctor(@RequestBody DoctorCreateRequest createRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(createRequest));

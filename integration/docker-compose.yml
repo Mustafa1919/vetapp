@@ -10,7 +10,7 @@ services:
       DB_USERNAME: "test"
       DB_PASSWORD: "1234"
       JWT_KEY: "jwtProject"
-      JWT_ISSUER: "gucardev"
+      JWT_ISSUER: "mstech"
       JWT_EXPIRE: 15
 
   h2db:

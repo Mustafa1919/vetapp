@@ -1,6 +1,8 @@
 package com.dw.vetapp.veterinary.helper.exception;
 
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,5 +29,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(err -> errors.put(err.getField(),err.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<String> handle(RequestNotPermitted exception){
+        return new ResponseEntity<>("Çok Fazla Deneme Yaptınız", HttpStatus.TOO_MANY_REQUESTS);
     }
 }

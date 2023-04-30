@@ -1,8 +1,10 @@
 package com.dw.vetapp.veterinary.animalowner;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/patient")
 @RequiredArgsConstructor
+@RateLimiter(name = "basic")
 public class AnimalOwnerApi {
 
     private final AnimalOwnerService service;
@@ -29,6 +32,7 @@ public class AnimalOwnerApi {
         return ResponseEntity.status(HttpStatus.OK).body(service.getOwnersByDoctorId(id));
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping
     public ResponseEntity<AnimalOwnerResponse> savePatient(@RequestBody AnimalOwnerCreateRequest createRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(createRequest));
